@@ -6,7 +6,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/seita-uc/grpc/proto/go/api"
 	"github.com/seita-uc/grpc/service"
 	"google.golang.org/grpc"
@@ -27,7 +27,6 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	api.RegisterAliveServiceServer(grpcServer, &service.Alive{})
 	api.RegisterTodoServiceServer(grpcServer, &service.Todo{})
 	go grpcServer.Serve(listener)
 
@@ -35,7 +34,6 @@ func main() {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
 	endpoint := "localhost" + grpcPort
-	api.RegisterAliveServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 	api.RegisterTodoServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
 	http.ListenAndServe(httpPort, mux)
 }
